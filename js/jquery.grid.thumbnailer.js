@@ -68,6 +68,7 @@
 
       initAjaxCall: false,
       showNav: true,
+      showNavNumbers: false
     }
 
     var options = $.extend(_defaults, options);
@@ -103,8 +104,12 @@
 
         if(options.showNav) {
           //create dinamic nac 
-          for(var i = 0; i < imagesData.imagesArray.length; i++) {
-            a = $("<a>");
+          for(var i = 1; i < imagesData.imagesArray.length; i++) {
+            if (options.showNavNumbers == true) {
+              a = $("<a>").html(i);
+            } else {
+              a = $("<a>");
+            }
             $nav.append(a);
           }
 
