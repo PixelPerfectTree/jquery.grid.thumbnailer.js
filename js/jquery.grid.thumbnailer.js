@@ -104,9 +104,9 @@
 
         if(options.showNav) {
           //create dinamic nac 
-          for(var i = 1; i < imagesData.imagesArray.length; i++) {
+          for(var i = 0; i < imagesData.imagesArray.length; i++) {
             if (options.showNavNumbers == true) {
-              a = $("<a>").html(i);
+              a = $("<a>").html(i + 1);
             } else {
               a = $("<a>");
             }
