@@ -19,15 +19,17 @@
 
       _init: function() {
 
+        //init values
+
         this.$nav = this.$el.next('nav');
         this.currentPage = 1;
         this.isAnimating = false;
-        if(this.originalImages === undefined) this.originalImages = this.$el.find('li').clone();
+        this.originalImages = this.$el.find('li').clone();
         this.imagesData = {};
         this.items = [];
 
         this._buildImagesArray();
-        this._buildInitList();
+        this._buildList();
         this._buildNav();
 
       },
@@ -56,7 +58,7 @@
       setPagination: function(page) {
         this.options.paginate = page;
         this._buildImagesArray();
-        this._buildInitList();
+        this._buildList();
         this._buildNav();
       },
 
@@ -64,7 +66,7 @@
         this.originalImages.push($(item)[0])
         console.log()
         this._buildImagesArray();
-        this._buildInitList();
+        this._buildList();
         this._buildNav();
       },
 
@@ -72,7 +74,7 @@
         var finalIndex = (index + ((this.currentPage * this.options.paginate) - this.options.paginate)) - 1
         this.originalImages.splice(finalIndex, 1);
         this._buildImagesArray();
-        this._buildInitList();
+        this._buildList();
         this._buildNav();
       },
 
@@ -86,36 +88,17 @@
           });
 
           this._buildImagesArray();
-          this._buildInitList();
+          this._buildList();
           this._buildNav();
         }
       },
 
       //Privates
 
-      _buildInitList: function() {
-        _super = this;
-        
-        this.$el.find('li').remove();
-
-        if(this.currentPage > this.imagesData.imagesArray.length) {
-          this.currentPage = this.imagesData.imagesArray.length; 
-        }
-
-        var images = this.imagesData.imagesArray[this.currentPage - 1];
-        
-        for(var i = 0; i < this.options.paginate; i++)
-          _super.$el.append("<li class='tt-empty'>"); 
-
-        $.each(images, function(key, value) {
-          if(value !== undefined)
-          _super.$el.find('li')[key].innerHTML = value;
-          $(_super.$el.find('li')[key]).removeClass('tt-empty').addClass('tt-visible');
-        })
-
-        this.items = [].slice.call( this.el.querySelectorAll( 'li' ) );
-        $('.tt-empty').hide();
-      },
+      /* 
+        Build imageData object with originalImages 
+        imageArray property is an array with paginated content
+      */
 
       _buildImagesArray: function() {
         var tempArray = [];
@@ -130,9 +113,51 @@
         }
       },
 
+
+      /*
+        Build options.paginate's lis for the grid with imagesArray
+        Get the images for the current page and insert them.
+      */
+
+      _buildList: function() {
+        _super = this;
+        
+        this.$el.find('li').remove();
+
+        // if new imageArray length is less than cureent page, set the currentPage the last page
+        if(this.currentPage > this.imagesData.imagesArray.length) {
+          this.currentPage = this.imagesData.imagesArray.length; 
+        }
+
+        // Get currentPage images
+        var images = this.imagesData.imagesArray[this.currentPage - 1];
+        
+        // Create new empty li's 
+        for(var i = 0; i < this.options.paginate; i++)
+          _super.$el.append("<li class='tt-empty'>"); 
+
+        // Insert the image in ther respective li and replace tt-empty to tt-visible
+        $.each(images, function(key, value) {
+          if(value !== undefined) {
+            _super.$el.find('li')[key].innerHTML = value;
+            $(_super.$el.find('li')[key]).removeClass('tt-empty').addClass('tt-visible');
+          }
+        })
+
+        this.items = [].slice.call( this.el.querySelectorAll( 'li' ) );
+
+        //hide empty li's for good navigation look
+        $('.tt-empty').hide();
+      },
+
+      /*
+        Build navigation dots with imagesData object
+      */
+
       _buildNav: function() {
         _super = this;
         this.$nav.find('a').remove();
+
         if(this.options.showNav) {
           //create dinamic nac 
           for(var i = 0; i < this.imagesData.imagesArray.length; i++) {
@@ -156,6 +181,10 @@
         }
       },
 
+      /*
+        Change nav dot current page
+      */
+
       _setCurrentNav: function(page) {
         if(this.options.showNav) {
           this.$nav.find('a').removeClass('tt-current');
@@ -165,11 +194,13 @@
 
       _setImages: function(newImages) {
         _super = this;
+
+        // show empty lis for good animation event trigger
         $('.tt-empty').show();
+
         if(Array.isArray(newImages) && newImages != [] ) {
           this.$el.children('li').children().addClass('tt-old')
 
-          // apply effect
           setTimeout( function() {
             
             // append new elements
@@ -177,7 +208,6 @@
               _super.items[ i ].innerHTML += el; 
               $(_super.items[ i ]).addClass('tt-visible');
             } );
-
 
             _super.$el.addClass("tt-effect-active");
             
@@ -213,12 +243,8 @@
     }
 
 
-
-    // This is the boilerplate code
-
     var ret;
 
-    // Plugin constructor
     function Plugin (elem, options) {
       this.options = options;
       this.el = elem;
