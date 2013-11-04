@@ -28,12 +28,16 @@
 
 .tt-grid li {
 	position: relative;
-	display: inline-block;
+	display: none
 	margin: 10px;
 	width: 300px;
 	height: 225px;
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
+}
+
+.tt-grid li.tt-visible {
+	display: inline-block;
 }
 
 .tt-grid li a,

@@ -60,10 +60,35 @@
         this._buildNav();
       },
 
-      update: function() {
+      addItem: function(item) {
+        this.originalImages.push($(item)[0])
+        console.log()
         this._buildImagesArray();
         this._buildInitList();
         this._buildNav();
+      },
+
+      removeItemInCurrentPage: function(index) {
+        var finalIndex = (index + ((this.currentPage * this.options.paginate) - this.options.paginate)) - 1
+        this.originalImages.splice(finalIndex, 1);
+        this._buildImagesArray();
+        this._buildInitList();
+        this._buildNav();
+      },
+
+      update: function() {
+        _super = this;
+        if(this.$el.find('li').length > this.options.paginate) {
+          var newItems = [].slice.call(this.el.querySelectorAll('li'), this.options.paginate, this.$el.find('li').length )
+          
+          newItems.forEach(function( el ) {
+            _super.originalImages.push(el)
+          });
+
+          this._buildImagesArray();
+          this._buildInitList();
+          this._buildNav();
+        }
       },
 
       //Privates
@@ -73,7 +98,6 @@
         
         this.$el.find('li').remove();
 
-        
         if(this.currentPage > this.imagesData.imagesArray.length) {
           this.currentPage = this.imagesData.imagesArray.length; 
         }
@@ -86,7 +110,7 @@
         $.each(images, function(key, value) {
           if(value !== undefined)
           _super.$el.find('li')[key].innerHTML = value;
-          $(_super.$el.find('li')[key]).removeClass('tt-empty');
+          $(_super.$el.find('li')[key]).removeClass('tt-empty').addClass('tt-visible');
         })
 
         this.items = [].slice.call( this.el.querySelectorAll( 'li' ) );
@@ -150,8 +174,9 @@
             
             // append new elements
             [].forEach.call( newImages, function( el, i ) { 
-              _super.items[ i ]
-              _super.items[ i ].innerHTML += el; } );
+              _super.items[ i ].innerHTML += el; 
+              $(_super.items[ i ]).addClass('tt-visible');
+            } );
 
 
             _super.$el.addClass("tt-effect-active");
@@ -170,11 +195,9 @@
                 };
               } );
 
-              _super.$el.removeClass('tt-effect-active' );
+              _super.$el.removeClass('tt-effect-active');
               _super.isAnimating = false;
               $('.tt-empty').hide();
-
-
             };
 
             if( support ) {
