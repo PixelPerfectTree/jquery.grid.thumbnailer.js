@@ -64,7 +64,6 @@
 
       addItem: function(item) {
         this.originalImages.push($(item)[0])
-        console.log()
         this._buildImagesArray();
         this._buildList();
         this._buildNav();
