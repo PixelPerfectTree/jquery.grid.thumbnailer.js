@@ -1,153 +1,232 @@
-(function() {
-
-  $.fn.thumbnailer = function(options) { 
-    
-    //private 
-
-    var grid = this[0],
-        items = null,
-        isAnimating = false;
-
-    function setImages(newImages) {
+(function($) {
   
-      if(Array.isArray(newImages) && newImages != [] ) {
-        $this.children('li').children().addClass('tt-old')
-
-        // apply effect
-        setTimeout( function() {
-          
-          // append new elements
-          [].forEach.call( newImages, function( el, i ) { items[ i ].innerHTML += el; } );
-
-
-          $(grid).addClass("tt-effect-active");
-          
-          var onEndAnimFn = function() {
-            // remove old elements
-            items.forEach( function( el ) {
-
-              var old = el.querySelector( '.tt-old' );
-              if( old ) { el.removeChild( old ); }
-
-              $(el).removeClass('tt-empty');
-            
-              if ( !el.hasChildNodes() ) {
-                classie.add( el, 'tt-empty' );
-                $(el).addClass('tt-empty' );
-              };
-            } );
-
-            $(grid).removeClass('tt-effect-active' );
-            isAnimating = false;
-          };
-          if( support ) {
-            onAnimationEnd( items, items.length, onEndAnimFn );
-          }
-          else {
-            onEndAnimFn.call();
-          }
-
-        }, 25 );
-      }
-    }
-
-    function setCurrentNav(page) {
-      if(options.showNav) {
-        $nav.find('a').removeClass('tt-current');
-        $nav.find('a').eq(page-1).addClass('tt-current');
-      }
-    }
-
-    //end private
-
-    var _defaults = {
+  var pluginName = "thumbnailer";
+    
+  $.fn[pluginName] = function(options) {
+  
+    // Defaults options
+    var defaults = {
       paginate: 6, 
       pageChangeCallback: function(curPage, totalPages) {
         console.log(curPage + " of " + totalPages);
       },
-
       initAjaxCall: false,
       showNav: true,
       showNavNumbers: false
     }
 
-    var options = $.extend(_defaults, options);
-    var imagesData = {};
-    $this = $(this);
-    $nav = $this.next('nav')
-    
-    function init() {
+    var methods = {
 
-      if($this.data('plugin_thumbGrid') === undefined) {
+      _init: function() {
 
-        $this.data('curPage',1);
-        $this.data('plugin_thumbGrid', true);
-        isAnimating = false,
+        this.$nav = this.$el.next('nav');
+        this.currentPage = 1;
+        this.isAnimating = false;
+        if(this.originalImages === undefined) this.originalImages = this.$el.find('li').clone();
+        this.imagesData = {};
+        this.items = [];
 
-        originalImages = $this.find('li');
+        this._buildImagesArray();
+        this._buildInitList();
+        this._buildNav();
 
-        tempArray = [];
+      },
 
-        originalImages.each(function(i){
+      //Public
+
+      next: function() {
+        _page = this.currentPage + 1;
+        this.goTo(_page);
+      },
+
+      previous: function()  {
+        _page = this.currentPage - 1;
+        this.goTo(_page);
+      },
+
+      goTo: function(page) {
+        if(!this.isAnimating && page <= this.imagesData.imagesArray.length) {
+          this._setCurrentNav(page);
+          this.currentPage = page;
+          this.isAnimating = true;
+          this._setImages(this.imagesData.imagesArray[page-1]);
+          this.options.pageChangeCallback(this.currentPage, this.imagesData.imagesArray.length)
+        }
+      },
+      setPagination: function(page) {
+        this.options.paginate = page;
+        this._buildImagesArray();
+        this._buildInitList();
+        this._buildNav();
+      },
+
+      update: function() {
+        this._buildImagesArray();
+        this._buildInitList();
+        this._buildNav();
+      },
+
+      //Privates
+
+      _buildInitList: function() {
+        _super = this;
+        
+        this.$el.find('li').remove();
+
+        
+        if(this.currentPage > this.imagesData.imagesArray.length) {
+          this.currentPage = this.imagesData.imagesArray.length; 
+        }
+
+        var images = this.imagesData.imagesArray[this.currentPage - 1];
+        
+        for(var i = 0; i < this.options.paginate; i++)
+          _super.$el.append("<li class='tt-empty'>"); 
+
+        $.each(images, function(key, value) {
+          if(value !== undefined)
+          _super.$el.find('li')[key].innerHTML = value;
+          $(_super.$el.find('li')[key]).removeClass('tt-empty');
+        })
+
+        this.items = [].slice.call( this.el.querySelectorAll( 'li' ) );
+        $('.tt-empty').hide();
+      },
+
+      _buildImagesArray: function() {
+        var tempArray = [];
+
+        this.originalImages.each(function(i){
           tempArray.push(this.innerHTML);
         });
 
-        imagesData = {
-          total: $this.find('li').length,
-          imagesArray: tempArray.chunk(options.paginate)
+        this.imagesData = {
+          total: this.originalImages.length,
+          imagesArray: tempArray.chunk(this.options.paginate)
         }
+      },
 
-        remove = originalImages.slice(options.paginate - 1, originalImages.length -1);
-        $(remove).remove();
-
-        items = [].slice.call( grid.querySelectorAll( 'li' ) );
-
-        if(options.showNav) {
+      _buildNav: function() {
+        _super = this;
+        this.$nav.find('a').remove();
+        if(this.options.showNav) {
           //create dinamic nac 
-          for(var i = 0; i < imagesData.imagesArray.length; i++) {
-            if (options.showNavNumbers == true) {
+          for(var i = 0; i < this.imagesData.imagesArray.length; i++) {
+            if (this.options.showNavNumbers == true) {
               a = $("<a>").html(i + 1);
             } else {
               a = $("<a>");
             }
-            $nav.append(a);
+            this.$nav.append(a);
           }
 
-          $nav.find('a').each(function(i) {
+          this.$nav.find('a').each(function(i) {
             $(this).on(eventtype, function(ev) {
-              if( isAnimating || $this.data('curPage') === (i+1) ) return false;
+              if( _super.isAnimating || _super.currentPage === (i+1) ) return false;
               ev.preventDefault();
-              publicMethods.goTo(i+1)  
+              _super.goTo(i+1)  
             })
           })
-          setCurrentNav($this.data('curPage'));
-        }
-        
-      } 
-    }
-    
-    init();
 
-    var publicMethods  = {
-      next: function() {
-        _page = $this.data('curPage') + 1;
-        this.goTo(_page);
+          this._setCurrentNav(this.currentPage);
+        }
       },
-      previous: function()  {
-        _page = $this.data('curPage') - 1;
-        this.goTo(_page);
+
+      _setCurrentNav: function(page) {
+        if(this.options.showNav) {
+          this.$nav.find('a').removeClass('tt-current');
+          this.$nav.find('a').eq(page-1).addClass('tt-current');
+        }
       },
-      goTo: function(page) {
-        if(!isAnimating) {
-          setCurrentNav(page)
-          isAnimating = true
-          $this.data('curPage', page )
-          setImages(imagesData.imagesArray[page-1]);
-          options.pageChangeCallback($this.data('curPage'), imagesData.imagesArray.length)
+
+      _setImages: function(newImages) {
+        _super = this;
+        $('.tt-empty').show();
+        if(Array.isArray(newImages) && newImages != [] ) {
+          this.$el.children('li').children().addClass('tt-old')
+
+          // apply effect
+          setTimeout( function() {
+            
+            // append new elements
+            [].forEach.call( newImages, function( el, i ) { 
+              _super.items[ i ]
+              _super.items[ i ].innerHTML += el; } );
+
+
+            _super.$el.addClass("tt-effect-active");
+            
+            var onEndAnimFn = function() {
+              // remove old elements
+              _super.items.forEach( function( el ) {
+              
+                var old = el.querySelector( '.tt-old' );
+                if( old ) { el.removeChild( old ); }
+
+                $(el).removeClass('tt-empty');
+              
+                if ( !el.hasChildNodes() ) {
+                  $(el).addClass('tt-empty' );
+                };
+              } );
+
+              _super.$el.removeClass('tt-effect-active' );
+              _super.isAnimating = false;
+              $('.tt-empty').hide();
+
+
+            };
+
+            if( support ) {
+              onAnimationEnd( _super.items, _super.items.length, onEndAnimFn );
+            }
+            else {
+              onEndAnimFn.call();
+            }
+
+          }, 25 );
         }
       }
     }
 
-    return publicMethods;
-  }
-})(jQuery);
+
+
+    // This is the boilerplate code
+
+    var ret;
+
+    // Plugin constructor
+    function Plugin (elem, options) {
+      this.options = options;
+      this.el = elem;
+      this.$el = $(elem);
+    
+      this._init.call(this);
+    }
+
+    Plugin.prototype._init = $.noop;
+
+    $.extend(Plugin.prototype, methods)
+
+    this.each(function() {
+        if(options && typeof(options) == "string")
+          if($(this).data(pluginName)) 
+            if($(this).data(pluginName)[options]) {
+              ret = $(this).data(pluginName)[options].apply(this, [].slice.call(args, 1))
+            }
+
+        if(!$(this).data(pluginName)) { 
+          options = $.extend({}, defaults, $.fn[pluginName].defaults, options)
+          $(this).data(pluginName, new Plugin(this, options)) 
+        }
+    });
+
+    return (ret === undefined) ? this : ret;
+
+  } 
+
+  //Global defaults
+  $.fn[pluginName].defaults = {}
+
+
+})(jQuery)
