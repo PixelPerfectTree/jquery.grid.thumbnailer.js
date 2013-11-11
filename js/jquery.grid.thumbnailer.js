@@ -224,7 +224,7 @@
 
                 $(el).removeClass('tt-empty');
               
-                if ( !el.hasChildNodes() ) {
+                if ( $(el).children().length == 0 ) {
                   $(el).addClass('tt-empty' );
                 };
               } );
