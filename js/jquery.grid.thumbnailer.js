@@ -265,7 +265,7 @@
         if(options && typeof(options) == "string")
           if($(this).data(pluginName)) 
             if($(this).data(pluginName)[options]) {
-              ret = $(this).data(pluginName)[options].apply(this, [].slice.call(args, 1))
+              ret = $(this).data(pluginName)[options].apply($(this).data(pluginName), [].slice.call(args, 1))
             }
 
         if(!$(this).data(pluginName)) { 
