@@ -10,6 +10,8 @@
       pageChangeCallback: function(curPage, totalPages) {
         console.log(curPage + " of " + totalPages);
       },
+      onPaginationStart: $.noop,
+      onPaginationEnd: $.noop,
       initAjaxCall: false,
       showNav: true,
       showNavNumbers: false
@@ -198,6 +200,8 @@
         $('.tt-empty').show();
 
         if(Array.isArray(newImages) && newImages != [] ) {
+          this.options.onPaginationStart();
+
           this.$el.children('li').children().addClass('tt-old')
 
           setTimeout( function() {
@@ -227,6 +231,7 @@
               _super.$el.removeClass('tt-effect-active');
               _super.isAnimating = false;
               $('.tt-empty').hide();
+              _super.options.onPaginationEnd();
             };
 
             if( support ) {
