@@ -29,7 +29,7 @@ function onAnimationEnd( elems, len, callback ) {
       }
     };
 
-  elems.forEach( function( el,i ) { el.querySelector('a').addEventListener( animEndEventName, onEndFn ); } );
+  elems.forEach( function( el,i ) { el.querySelector('div').addEventListener( animEndEventName, onEndFn ); } );
 }
 
 Array.prototype.chunk = function(chunkSize) {

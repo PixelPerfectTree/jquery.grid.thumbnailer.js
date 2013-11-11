@@ -28,7 +28,7 @@
 
 .tt-grid li {
 	position: relative;
-	display: none
+	display: none;
 	margin: 10px;
 	width: 300px;
 	height: 225px;
@@ -40,21 +40,21 @@
 	display: inline-block;
 }
 
-.tt-grid li a,
-.tt-grid li a img {
+.tt-grid li div,
+.tt-grid li div img {
 	display: block;
 	margin: 0 auto;
 	border: none;
 }
 
-.tt-grid li a {
+.tt-grid li div {
 	background: #000;
 	position: absolute;
 	top: 0;
 	left: 0;
 }
 
-.tt-grid li a:nth-child(2) {
+.tt-grid li div:nth-child(2) {
 	z-index: 1;
 	visibility: hidden;
 }
@@ -91,27 +91,27 @@
 	box-shadow: 0 0 0 5px rgba(255,255,255,0.4);
 }
 
-.tt-grid.tt-effect-active li a {
+.tt-grid.tt-effect-active li div {
 	pointer-events: none;
 }
 
 /* Individual grid effects */
 
 /* Fall down / scale up */
-.tt-effect-fall.tt-effect-active li:not(.tt-empty) a:first-child {
+.tt-effect-fall.tt-effect-active li:not(.tt-empty) div:first-child {
 	-webkit-animation: fallDown 0.6s forwards;
 	animation: fallDown 0.6s forwards;
 }
 
-.tt-effect-fall.tt-effect-active li a:nth-child(2),
-.tt-effect-fall.tt-effect-active li.tt-empty a {
+.tt-effect-fall.tt-effect-active li div:nth-child(2),
+.tt-effect-fall.tt-effect-active li.tt-empty div {
 	opacity: 0;
 	-webkit-animation: scaleUpFadeIn 0.6s forwards;
 	animation: scaleUpFadeIn 0.6s forwards;
 }
 
 /* Slide and reveal */
-.tt-effect-slide.tt-effect-active li:not(.tt-empty) a:first-child {
+.tt-effect-slide.tt-effect-active li:not(.tt-empty) div:first-child {
 	z-index: 100;
 	overflow: hidden;
 	margin: 0;
@@ -119,22 +119,22 @@
 	animation: slideOut 0.5s forwards;
 }
 
-.tt-effect-slide.tt-effect-active a:nth-child(2) {
+.tt-effect-slide.tt-effect-active div:nth-child(2) {
 	visibility: visible;
 }
 
-.tt-effect-slide.tt-effect-active li:not(.tt-empty) a:only-child {
+.tt-effect-slide.tt-effect-active li:not(.tt-empty) div:only-child {
 	-webkit-animation: fadeOut 0.5s forwards;
 	animation: fadeOut 0.5s forwards;
 }
 
-.tt-effect-slide.tt-effect-active li.tt-empty a {
+.tt-effect-slide.tt-effect-active li.tt-empty div {
 	-webkit-animation: fadeIn 0.5s forwards;
 	animation: fadeIn 0.5s forwards;
 }
 
 /* Fall and rotate */
-.tt-effect-fallrotate.tt-effect-active li:not(.tt-empty) a:first-child {
+.tt-effect-fallrotate.tt-effect-active li:not(.tt-empty) div:first-child {
 	z-index: 10;
 	-webkit-transform-origin: 0 0;
 	transform-origin: 0 0;
@@ -142,12 +142,12 @@
 	animation: fallRotate 0.6s ease-in forwards;
 }
 
-.tt-effect-fallrotate.tt-effect-active li a:nth-child(2),
-.tt-effect-fallrotate.tt-effect-active li.tt-empty a {
+.tt-effect-fallrotate.tt-effect-active li div:nth-child(2),
+.tt-effect-fallrotate.tt-effect-active li.tt-empty div {
 	visibility: visible;
 }
 
-.tt-effect-fallrotate.tt-effect-active li.tt-empty a {
+.tt-effect-fallrotate.tt-effect-active li.tt-empty div {
 	opacity: 0;
 	-webkit-animation: fadeIn 0.6s forwards;
 	animation: fadeIn 0.6s forwards;
@@ -161,19 +161,19 @@
 .tt-effect-fallrotate li:nth-child(3) { z-index: 6; }
 
 /* Scale and rotate */
-.tt-effect-scalerotate.tt-effect-active li:not(.tt-empty) a:first-child {
+.tt-effect-scalerotate.tt-effect-active li:not(.tt-empty) div:first-child {
 	-webkit-animation: scaleRotateOut 0.6s forwards;
 	animation: scaleRotateOut 0.6s forwards;
 }
 
-.tt-effect-scalerotate.tt-effect-active li a:nth-child(2),
-.tt-effect-scalerotate.tt-effect-active li.tt-empty a {
+.tt-effect-scalerotate.tt-effect-active li div:nth-child(2),
+.tt-effect-scalerotate.tt-effect-active li.tt-empty div {
 	opacity: 0;
 	-webkit-animation: scaleRotateIn 0.6s forwards;
 	animation: scaleRotateIn 0.6s forwards;
 }
 
-.tt-effect-scalerotate.tt-effect-active li:not(.tt-empty) a:only-child {
+.tt-effect-scalerotate.tt-effect-active li:not(.tt-empty) div:only-child {
 	-webkit-animation: fadeOut 0.6s forwards;
 	animation: fadeOut 0.6s forwards;
 }
@@ -187,31 +187,31 @@
 	perspective: 1000px;
 }
 
-.tt-effect-stackback li a {
+.tt-effect-stackback li div {
 	-webkit-transform-style: preserve-3d;
 	transform-style: preserve-3d;
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
 }
 
-.tt-effect-stackback.tt-effect-active li:not(.tt-empty) a:first-child {
+.tt-effect-stackback.tt-effect-active li:not(.tt-empty) div:first-child {
 	-webkit-animation: moveLeft 0.8s forwards;
 	animation: moveLeft 0.8s forwards;
 }
 
-.tt-effect-stackback.tt-effect-active li a:nth-child(2),
-.tt-effect-stackback.tt-effect-active li.tt-empty a {
+.tt-effect-stackback.tt-effect-active li div:nth-child(2),
+.tt-effect-stackback.tt-effect-active li.tt-empty div {
 	z-index: -1;
 	-webkit-animation: popUp 0.8s ease-in forwards;
 	animation: popUp 0.8s ease-in forwards;
 }
 
-.tt-effect-stackback.tt-effect-active li:not(.tt-empty) a:only-child {
+.tt-effect-stackback.tt-effect-active li:not(.tt-empty) div:only-child {
 	-webkit-animation: fadeOut 0.8s forwards;
 	animation: fadeOut 0.8s forwards;
 }
 
-.tt-effect-stackback.tt-effect-active li.tt-empty a {
+.tt-effect-stackback.tt-effect-active li.tt-empty div {
 	opacity: 0;
 	-webkit-animation: fadeIn 0.8s forwards;
 	animation: fadeIn 0.8s forwards;
@@ -223,22 +223,22 @@
 	perspective: 1000px;
 }
 
-.tt-effect-3dflip li a {
+.tt-effect-3dflip li div {
 	-webkit-transform-style: preserve-3d;
 	transform-style: preserve-3d;
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
 }
 
-.tt-effect-3dflip.tt-effect-active li:not(.tt-empty) a:first-child {
+.tt-effect-3dflip.tt-effect-active li:not(.tt-empty) div:first-child {
 	-webkit-transform-origin: 0% 50%;
 	transform-origin: 0% 50%;
 	-webkit-animation: rotateOutLeft 0.6s forwards;
 	animation: rotateOutLeft 0.6s forwards;
 }
 
-.tt-effect-3dflip.tt-effect-active li a:nth-child(2),
-.tt-effect-3dflip.tt-effect-active li.tt-empty a {
+.tt-effect-3dflip.tt-effect-active li div:nth-child(2),
+.tt-effect-3dflip.tt-effect-active li.tt-empty div {
 	opacity: 0;
 	-webkit-transform-origin: 100% 50%;
 	transform-origin: 100% 50%;
@@ -253,43 +253,43 @@
 	perspective: 1000px;
 }
 
-.tt-effect-bringback li a {
+.tt-effect-bringback li div {
 	-webkit-transform-style: preserve-3d;
 	transform-style: preserve-3d;
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
 }
 
-.tt-effect-bringback.tt-effect-active li:not(.tt-empty) a:first-child {
+.tt-effect-bringback.tt-effect-active li:not(.tt-empty) div:first-child {
 	-webkit-animation: hideLeft 0.8s forwards;
 	animation: hideLeft 0.8s forwards;
 }
 
-.tt-effect-bringback.tt-effect-active li a:nth-child(2) {
+.tt-effect-bringback.tt-effect-active li div:nth-child(2) {
 	z-index: -1;
 	-webkit-animation: showRight 0.8s forwards;
 	animation: showRight 0.8s forwards;
 }
 
-.tt-effect-bringback.tt-effect-active li:not(.tt-empty) a:only-child {
+.tt-effect-bringback.tt-effect-active li:not(.tt-empty) div:only-child {
 	-webkit-animation: fadeOut 0.8s forwards;
 	animation: fadeOut 0.8s forwards;
 }
 
-.tt-effect-bringback.tt-effect-active li.tt-empty a {
+.tt-effect-bringback.tt-effect-active li.tt-empty div {
 	opacity: 0;
 	-webkit-animation: fadeIn 0.8s forwards;
 	animation: fadeIn 0.8s forwards;
 }
 
 /* Superscale */
-.tt-effect-superscale.tt-effect-active li:not(.tt-empty) a:first-child {
+.tt-effect-superscale.tt-effect-active li:not(.tt-empty) div:first-child {
 	-webkit-animation: scaleDown 0.6s ease-in-out forwards;
 	animation: scaleDown 0.6s ease-in-out forwards;
 }
 
-.tt-effect-superscale.tt-effect-active li a:nth-child(2),
-.tt-effect-superscale.tt-effect-active li.tt-empty a {
+.tt-effect-superscale.tt-effect-active li div:nth-child(2),
+.tt-effect-superscale.tt-effect-active li.tt-empty div {
 	opacity: 0;
 	-webkit-animation: scaleIn 0.6s ease-in-out forwards;
 	animation: scaleIn 0.6s ease-in-out forwards;
@@ -301,20 +301,20 @@
 	perspective: 1500px;
 }
 
-.tt-effect-flip li a {
+.tt-effect-flip li div {
 	-webkit-transform-style: preserve-3d;
 	transform-style: preserve-3d;
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
 }
 
-.tt-effect-flip.tt-effect-active li:not(.tt-empty) a:first-child {
+.tt-effect-flip.tt-effect-active li:not(.tt-empty) div:first-child {
 	-webkit-animation: flipOut 0.8s ease-in forwards;
 	animation: flipOut 0.8s ease-in forwards;
 }
 
-.tt-effect-flip.tt-effect-active li a:nth-child(2),
-.tt-effect-flip.tt-effect-active li.tt-empty a {
+.tt-effect-flip.tt-effect-active li div:nth-child(2),
+.tt-effect-flip.tt-effect-active li.tt-empty div {
 	opacity: 0;
 	-webkit-animation: flipIn 0.8s ease-in forwards;
 	animation: flipIn 0.8s ease-in forwards;
@@ -325,74 +325,74 @@
 	overflow: hidden;
 }
 
-.tt-effect-frontrow.tt-effect-active li:not(.tt-empty) a:first-child {
+.tt-effect-frontrow.tt-effect-active li:not(.tt-empty) div:first-child {
 	-webkit-animation: moveToBack 0.8s forwards;
 	animation: moveToBack 0.8s forwards;
 }
 
-.tt-effect-frontrow.tt-effect-active li a:nth-child(2),
-.tt-effect-frontrow.tt-effect-active li.tt-empty a {
+.tt-effect-frontrow.tt-effect-active li div:nth-child(2),
+.tt-effect-frontrow.tt-effect-active li.tt-empty div {
 	-webkit-animation: moveToFront 0.8s forwards;
 	animation: moveToFront 0.8s forwards;
 }
 
-.tt-effect-frontrow.tt-effect-active li.tt-empty a {
+.tt-effect-frontrow.tt-effect-active li.tt-empty div {
 	opacity: 0;
 }
 
-.tt-effect-frontrow.tt-effect-active li:not(.tt-empty) a:only-child {
+.tt-effect-frontrow.tt-effect-active li:not(.tt-empty) div:only-child {
 	-webkit-animation: fadeOut 0.5s forwards;
 	animation: fadeOut 0.5s forwards;
 }
 
 /* Animation delays */
-.tt-grid-wrapper .tt-effect-delay.tt-effect-active li:nth-child(2) a {
+.tt-grid-wrapper .tt-effect-delay.tt-effect-active li:nth-child(2) div {
 	-webkit-animation-delay: 0.1s;
 	animation-delay: 0.1s;
 }
 
-.tt-grid-wrapper .tt-effect-delay.tt-effect-active li:nth-child(3) a {
+.tt-grid-wrapper .tt-effect-delay.tt-effect-active li:nth-child(3) div {
 	-webkit-animation-delay: 0.2s;
 	animation-delay: 0.2s;
 }
 
-.tt-grid-wrapper .tt-effect-delay.tt-effect-active li:nth-child(4) a {
+.tt-grid-wrapper .tt-effect-delay.tt-effect-active li:nth-child(4) div {
 	-webkit-animation-delay: 0.3s;
 	animation-delay: 0.3s;
 }
 
-.tt-grid-wrapper .tt-effect-delay.tt-effect-active li:nth-child(5) a {
+.tt-grid-wrapper .tt-effect-delay.tt-effect-active li:nth-child(5) div {
 	-webkit-animation-delay: 0.4s;
 	animation-delay: 0.4s;
 }
 
-.tt-grid-wrapper .tt-effect-delay.tt-effect-active li:nth-child(6) a {
+.tt-grid-wrapper .tt-effect-delay.tt-effect-active li:nth-child(6) div {
 	-webkit-animation-delay: 0.5s;
 	animation-delay: 0.5s;
 }
 
 /* Reverse delays */
-.tt-grid-wrapper .tt-effect-delay-reversed.tt-effect-active li:nth-child(5) a {
+.tt-grid-wrapper .tt-effect-delay-reversed.tt-effect-active li:nth-child(5) div {
 	-webkit-animation-delay: 0.1s;
 	animation-delay: 0.1s;
 }
 
-.tt-grid-wrapper .tt-effect-delay-reversed.tt-effect-active li:nth-child(4) a {
+.tt-grid-wrapper .tt-effect-delay-reversed.tt-effect-active li:nth-child(4) div {
 	-webkit-animation-delay: 0.2s;
 	animation-delay: 0.2s;
 }
 
-.tt-grid-wrapper .tt-effect-delay-reversed.tt-effect-active li:nth-child(3) a {
+.tt-grid-wrapper .tt-effect-delay-reversed.tt-effect-active li:nth-child(3) div {
 	-webkit-animation-delay: 0.3s;
 	animation-delay: 0.3s;
 }
 
-.tt-grid-wrapper .tt-effect-delay-reversed.tt-effect-active li:nth-child(2) a {
+.tt-grid-wrapper .tt-effect-delay-reversed.tt-effect-active li:nth-child(2) div {
 	-webkit-animation-delay: 0.4s;
 	animation-delay: 0.4s;
 }
 
-.tt-grid-wrapper .tt-effect-delay-reversed.tt-effect-active li:nth-child(1) a {
+.tt-grid-wrapper .tt-effect-delay-reversed.tt-effect-active li:nth-child(1) div {
 	-webkit-animation-delay: 0.5s;
 	animation-delay: 0.5s;
 }
