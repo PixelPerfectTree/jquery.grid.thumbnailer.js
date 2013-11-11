@@ -261,7 +261,6 @@
     Plugin.prototype._init = $.noop;
 
     $.extend(Plugin.prototype, methods)
-
     this.each(function() {
         if(options && typeof(options) == "string")
           if($(this).data(pluginName)) 
