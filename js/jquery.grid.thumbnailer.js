@@ -3,7 +3,8 @@
   var pluginName = "thumbnailer";
     
   $.fn[pluginName] = function(options) {
-  
+    var args = arguments;
+    
     // Defaults options
     var defaults = {
       paginate: 6, 
