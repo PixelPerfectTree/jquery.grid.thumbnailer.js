@@ -132,7 +132,7 @@
         }
 
         // Get currentPage images
-        var images = this.imagesData.imagesArray[this.currentPage - 1];
+        var images = this.imagesData.imagesArray[this.currentPage - 1] || [];
         
         // Create new empty li's 
         for(var i = 0; i < this.options.paginate; i++)
