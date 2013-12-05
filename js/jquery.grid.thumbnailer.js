@@ -125,6 +125,9 @@
         _super = this;
         
         this.$el.find('li').remove();
+        
+        if (this.currentPage == 0)
+           this.currentPage++;
 
         // if new imageArray length is less than cureent page, set the currentPage the last page
         if(this.currentPage > this.imagesData.imagesArray.length) {
